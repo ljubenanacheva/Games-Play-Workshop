@@ -1,3 +1,4 @@
+import { CreateGame } from "./components/CreateGame/CreateGame.js";
 import { Footer } from "./components/Footer/Footer.js";
 import { Header } from "./components/Header/Header.js";
 import { Home } from "./components/Home/Home.js";
@@ -12,6 +13,7 @@ function App() {
         <Home />
         <Login />
         <Register />
+        <CreateGame />
       </main>
       <Footer />
     </div>
