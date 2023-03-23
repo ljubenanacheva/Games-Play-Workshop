@@ -1,4 +1,6 @@
 import { CreateGame } from "./components/CreateGame/CreateGame.js";
+import { Routes, Route } from "react-router-dom";
+
 import { Footer } from "./components/Footer/Footer.js";
 import { Header } from "./components/Header/Header.js";
 import { Home } from "./components/Home/Home.js";
@@ -11,11 +13,13 @@ function App() {
     <div id="box">
       <Header />
       <main id="main-content">
-        <Home />
-        <Login />
-        <Register />
-        <CreateGame />
-        <Catalog />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/create-game" element={<CreateGame />} />
+          <Route path="/catalog" element={<Catalog />} />
+        </Routes>
       </main>
       <Footer />
     </div>
