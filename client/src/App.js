@@ -4,6 +4,7 @@ import { Header } from "./components/Header/Header.js";
 import { Home } from "./components/Home/Home.js";
 import { Login } from "./components/Login/Login.js";
 import { Register } from "./components/Register/Register.js";
+import { Catalog } from "./components/Catalog/Catalog.js";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Login />
         <Register />
         <CreateGame />
+        <Catalog />
       </main>
       <Footer />
     </div>
