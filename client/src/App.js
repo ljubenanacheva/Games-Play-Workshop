@@ -10,6 +10,7 @@ import { Home } from "./components/Home/Home.js";
 import { Login } from "./components/Login/Login.js";
 import { Register } from "./components/Register/Register.js";
 import { Catalog } from "./components/Catalog/Catalog.js";
+import { GameDetails } from "./components/GameDetails/GameDetails.js";
 
 function App() {
   const navigate = useNavigate();
@@ -42,6 +43,7 @@ function App() {
             element={<CreateGame onCreateGameSubmit={onCreateGameSubmit} />}
           />
           <Route path="/catalog" element={<Catalog games={games} />} />
+          <Route path="/catalog/:gameId" element={<GameDetails />} />
         </Routes>
       </main>
       <Footer />
