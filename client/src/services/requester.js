@@ -1,8 +1,17 @@
-const request = async (method, url) => {
-  const response = await fetch(url, {
-    method,
-  });
+const request = async (method, url, data) => {
+  const options = {};
+
+  if (method !== "GET") {
+    options.method = method;
+    if (data) {
+      //options.headers = {
+      //  "contnent-type": "application/json",
+      //};
+      options.body = JSON.stringify(data);
+    }
+  }
   try {
+    const response = await fetch(url, options);
     const result = await response.json();
     return result;
   } catch (err) {
