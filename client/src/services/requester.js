@@ -1,4 +1,4 @@
-export const request = async (method, url) => {
+const request = async (method, url) => {
   const response = await fetch(url, {
     method,
   });
@@ -9,3 +9,5 @@ export const request = async (method, url) => {
     return {};
   }
 };
+
+export const get = request.bind(null, "GET");
