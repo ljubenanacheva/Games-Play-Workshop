@@ -20,17 +20,17 @@ export const GameDetails = () => {
       })
       .then((result) => {
         setComments(result);
-        console.log(comments);
       });
   }, [gameId]);
 
   const onCommentSubmit = async (e) => {
     e.preventDefault();
-    await commentService.create({
+    const result = await commentService.create({
       gameId,
       username,
       comment,
     });
+
     setUsername("");
     setComment("");
   };
@@ -52,7 +52,7 @@ export const GameDetails = () => {
           <h2>Comments:</h2>
           <ul>
             {comments.map((x) => (
-              <li key={x._id} className="comment">
+              <li key={comment._id} className="comment">
                 <p>
                   {x.username}: {x.comment}
                 </p>
