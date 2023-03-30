@@ -7,13 +7,21 @@ import * as commentService from "../../services/commentService.js";
 export const GameDetails = () => {
   const [username, setUsername] = useState("");
   const [comment, setComment] = useState("");
+  const [comments, setComments] = useState([]);
   const { gameId } = useParams();
   const [game, setGame] = useState({});
 
   useEffect(() => {
-    gameService.getOne(gameId).then((result) => {
-      setGame(result);
-    });
+    gameService
+      .getOne(gameId)
+      .then((result) => {
+        setGame(result);
+        return commentService.getAll(gameId);
+      })
+      .then((result) => {
+        setComments(result);
+        console.log(comments);
+      });
   }, [gameId]);
 
   const onCommentSubmit = async (e) => {
@@ -40,20 +48,18 @@ export const GameDetails = () => {
 
         <p className="text">{game.summary}</p>
 
-        {/* <!-- Bonus ( htmlfor Guests and Users ) --> */}
         <div className="details-comments">
           <h2>Comments:</h2>
           <ul>
-            {/* <!-- list all comments htmlfor current game (If any) --> */}
-            <li className="comment">
-              <p>Content: I rate this one quite highly.</p>
-            </li>
-            <li className="comment">
-              <p>Content: The best game.</p>
-            </li>
+            {comments.map((x) => (
+              <li key={x._id} className="comment">
+                <p>
+                  {x.username}: {x.comment}
+                </p>
+              </li>
+            ))}
           </ul>
-          {/* <!-- Display paragraph: If there are no games in the database --> */}
-          <p className="no-comment">No comments.</p>
+          {comments.length === 0 && <p className="no-comment">No comments.</p>}
         </div>
 
         {/* <!-- Edit/Delete buttons ( Only htmlfor creator of this game )  --> */}
