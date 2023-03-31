@@ -35,7 +35,21 @@ function App() {
     try {
       const result = await authService.login(data);
       setAuth(result);
-      console.log(auth);
+      navigate("/catalog");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const onRegisterSubmit = async (values) => {
+    const { confirmPassword, ...registerData } = values;
+
+    if (confirmPassword !== registerData.password) {
+      return;
+    }
+    try {
+      const result = await authService.register(registerData);
+      setAuth(result);
       navigate("/catalog");
     } catch (err) {
       console.log(err);
@@ -44,6 +58,7 @@ function App() {
 
   const context = {
     onLoginSubmit,
+    onRegisterSubmit,
     userId: auth._id,
     token: auth.accessToken,
     userEmail: auth.email,

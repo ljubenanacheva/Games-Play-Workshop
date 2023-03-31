@@ -1,7 +1,21 @@
+import { useContext } from "react";
+import { Link } from "react-router-dom";
+import { useForm } from "../../hooks/useForm.js";
+import { AuthContext } from "../../contexts/AuthContext.js";
+
 export const Register = () => {
+  const { onRegisterSubmit } = useContext(AuthContext);
+  const { values, changeHadler, onSubmit } = useForm(
+    {
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+    onRegisterSubmit
+  );
   return (
     <section id="register-page" className="content auth">
-      <htmlform id="register">
+      <form id="register" method="POST" onSubmit={onSubmit}>
         <div className="container">
           <div className="brand-logo"></div>
           <h1>Register</h1>
@@ -12,27 +26,37 @@ export const Register = () => {
             id="email"
             name="email"
             placeholder="maria@email.com"
+            value={values.email}
+            onChange={changeHadler}
           />
 
           <label htmlFor="pass">Password:</label>
-          <input type="password" name="password" id="register-password" />
+          <input
+            type="password"
+            name="password"
+            id="register-password"
+            value={values.password}
+            onChange={changeHadler}
+          />
 
           <label htmlFor="con-pass">Confirm Password:</label>
           <input
             type="password"
-            name="confirm-password"
+            name="confirmPassword"
             id="confirm-password"
+            value={values.confirmpassword}
+            onChange={changeHadler}
           />
 
           <input className="btn submit" type="submit" value="Register" />
 
           <p className="field">
             <span>
-              If you already have profile click <a href="#">here</a>
+              If you already have profile click <Link to="/login">here</Link>
             </span>
           </p>
         </div>
-      </htmlform>
+      </form>
     </section>
   );
 };
