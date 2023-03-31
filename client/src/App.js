@@ -17,7 +17,7 @@ import { GameDetails } from "./components/GameDetails/GameDetails.js";
 function App() {
   const navigate = useNavigate();
   const [games, setGames] = useState([]);
-  const [auth, setAuth] = useState();
+  const [auth, setAuth] = useState({});
 
   useEffect(() => {
     gameService.getAll().then((result) => {
@@ -35,6 +35,7 @@ function App() {
     try {
       const result = await authService.login(data);
       setAuth(result);
+      console.log(auth);
       navigate("/catalog");
     } catch (err) {
       console.log(err);
@@ -46,6 +47,7 @@ function App() {
     userId: auth._id,
     token: auth.accessToken,
     userEmail: auth.email,
+    isAuthenticated: !!auth.accessToken,
   };
 
   return (
