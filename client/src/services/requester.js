@@ -10,13 +10,16 @@ const request = async (method, url, data) => {
       options.body = JSON.stringify(data);
     }
   }
-  try {
-    const response = await fetch(url, options);
-    const result = await response.json();
-    return result;
-  } catch (err) {
+  const response = await fetch(url, options);
+  if (response.status === 204) {
     return {};
   }
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw result;
+  }
+  return result;
 };
 
 export const get = request.bind(null, "GET");
