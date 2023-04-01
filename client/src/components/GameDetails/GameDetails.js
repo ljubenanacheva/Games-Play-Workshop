@@ -43,6 +43,7 @@ export const GameDetails = () => {
 
   const onDeleteClick = async () => {
     await gameService.delete(game._id);
+    //TODO delete from state
     navigate("/catalog");
   };
 
