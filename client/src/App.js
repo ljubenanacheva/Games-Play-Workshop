@@ -13,6 +13,7 @@ import { Login } from "./components/Login/Login.js";
 import { Register } from "./components/Register/Register.js";
 import { Catalog } from "./components/Catalog/Catalog.js";
 import { GameDetails } from "./components/GameDetails/GameDetails.js";
+import { Logout } from "./components/Logout/Logout.js";
 
 function App() {
   const navigate = useNavigate();
@@ -56,9 +57,15 @@ function App() {
     }
   };
 
+  const onLogout = async () => {
+    // await authService.logout();
+    setAuth({});
+  };
+
   const context = {
     onLoginSubmit,
     onRegisterSubmit,
+    onLogout,
     userId: auth._id,
     token: auth.accessToken,
     userEmail: auth.email,
@@ -74,6 +81,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/logout" element={<Logout />} />
             <Route
               path="/create-game"
               element={<CreateGame onCreateGameSubmit={onCreateGameSubmit} />}

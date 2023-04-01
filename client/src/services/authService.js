@@ -9,3 +9,5 @@ export const login = (loginData) => {
 export const register = (registerData) => {
   return request.post(`${baseUrl}/register`, registerData);
 };
+
+export const logout = () => request.get(`${baseUrl}/logout`);
