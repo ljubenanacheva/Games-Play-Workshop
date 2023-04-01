@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 
-import * as gameService from "./services/gameService.js";
+import { gameServiceFactory } from "./services/gameService.js";
 import { AuthContext } from "./contexts/AuthContext.js";
-import * as authService from "./services/authService.js";
+import { authServiceFactory } from "./services/authService.js";
+import { useService } from "./hooks/useService.js";
 
 import { CreateGame } from "./components/CreateGame/CreateGame.js";
 import { Footer } from "./components/Footer/Footer.js";
@@ -19,6 +20,8 @@ function App() {
   const navigate = useNavigate();
   const [games, setGames] = useState([]);
   const [auth, setAuth] = useState({});
+  const gameService = gameServiceFactory(auth.accessToken);
+  const authService = authServiceFactory(auth.accessToken);
 
   useEffect(() => {
     gameService.getAll().then((result) => {
