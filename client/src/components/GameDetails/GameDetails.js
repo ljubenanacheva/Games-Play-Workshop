@@ -1,11 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 
 import { gameServiceFactory } from "../../services/gameService.js";
 import { commentFactory } from "../../services/commentService.js";
 import { useService } from "../../hooks/useService.js";
+import { AuthContext } from "../../contexts/AuthContext.js";
 
 export const GameDetails = () => {
+  const { userId } = useContext(AuthContext);
   const [username, setUsername] = useState("");
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
@@ -66,14 +68,16 @@ export const GameDetails = () => {
         </div>
 
         {/* <!-- Edit/Delete buttons ( Only htmlfor creator of this game )  --> */}
-        <div className="buttons">
-          <a href="#" className="button">
-            Edit
-          </a>
-          <a href="#" className="button">
-            Delete
-          </a>
-        </div>
+        {game._ownerId === userId && (
+          <div className="buttons">
+            <a href="#" className="button">
+              Edit
+            </a>
+            <a href="#" className="button">
+              Delete
+            </a>
+          </div>
+        )}
       </div>
 
       {/* <!-- Bonus --> */}
