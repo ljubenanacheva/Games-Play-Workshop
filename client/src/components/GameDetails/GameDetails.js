@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 import { gameServiceFactory } from "../../services/gameService.js";
 import { commentFactory } from "../../services/commentService.js";
@@ -15,6 +15,7 @@ export const GameDetails = () => {
   const [game, setGame] = useState({});
   const gameService = useService(gameServiceFactory);
   const commentService = useService(commentFactory);
+  const navigate = useNavigate();
 
   useEffect(() => {
     gameService
@@ -38,6 +39,11 @@ export const GameDetails = () => {
 
     setUsername("");
     setComment("");
+  };
+
+  const onDeleteClick = async () => {
+    await gameService.delete(game._id);
+    navigate("/catalog");
   };
 
   return (
@@ -73,9 +79,9 @@ export const GameDetails = () => {
             <a href="#" className="button">
               Edit
             </a>
-            <a href="#" className="button">
+            <button className="button" onClick={onDeleteClick}>
               Delete
-            </a>
+            </button>
           </div>
         )}
       </div>

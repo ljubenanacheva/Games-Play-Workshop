@@ -19,9 +19,13 @@ export const gameServiceFactory = (token) => {
     console.log(result);
     return result;
   };
+  const deleteOne = (gameId) => {
+    request.delete(`${baseUrl}/${gameId}`);
+  };
   return {
     getAll,
     getOne,
     create,
+    delete: deleteOne,
   };
 };
