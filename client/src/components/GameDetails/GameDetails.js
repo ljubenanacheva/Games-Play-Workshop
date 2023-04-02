@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 
 import { gameServiceFactory } from "../../services/gameService.js";
 import { commentFactory } from "../../services/commentService.js";
@@ -77,9 +77,9 @@ export const GameDetails = () => {
         {/* <!-- Edit/Delete buttons ( Only htmlfor creator of this game )  --> */}
         {game._ownerId === userId && (
           <div className="buttons">
-            <a href="#" className="button">
+            <Link to={`/catalog/${game._id}/edit`} className="button">
               Edit
-            </a>
+            </Link>
             <button className="button" onClick={onDeleteClick}>
               Delete
             </button>

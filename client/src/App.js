@@ -15,6 +15,7 @@ import { Register } from "./components/Register/Register.js";
 import { Catalog } from "./components/Catalog/Catalog.js";
 import { GameDetails } from "./components/GameDetails/GameDetails.js";
 import { Logout } from "./components/Logout/Logout.js";
+import { EditGame } from "./components/EditGame/EditGame.js";
 
 function App() {
   const navigate = useNavigate();
@@ -65,6 +66,14 @@ function App() {
     setAuth({});
   };
 
+  const onGameEditSubmit = async (values) => {
+    const editedGame = await gameService.edit(values._id, values);
+    setGames((state) =>
+      state.map((x) => (x._id === values._id ? editedGame : x))
+    );
+    navigate(`/catalog/${values._id}`);
+  };
+
   const context = {
     onLoginSubmit,
     onRegisterSubmit,
@@ -91,6 +100,10 @@ function App() {
             />
             <Route path="/catalog" element={<Catalog games={games} />} />
             <Route path="/catalog/:gameId" element={<GameDetails />} />
+            <Route
+              path="/catalog/:gameId/edit"
+              element={<EditGame onGameEditSubmit={onGameEditSubmit} />}
+            />
           </Routes>
         </main>
         <Footer />

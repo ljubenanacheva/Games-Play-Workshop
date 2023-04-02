@@ -19,6 +19,8 @@ export const gameServiceFactory = (token) => {
     console.log(result);
     return result;
   };
+  const edit = (gameId, data) => request.put(`${baseUrl}/${gameId}`, data);
+
   const deleteOne = (gameId) => {
     request.delete(`${baseUrl}/${gameId}`);
   };
@@ -26,6 +28,7 @@ export const gameServiceFactory = (token) => {
     getAll,
     getOne,
     create,
+    edit,
     delete: deleteOne,
   };
 };
