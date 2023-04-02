@@ -2,43 +2,38 @@ import { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 
 import { gameServiceFactory } from "../../services/gameService.js";
-import { commentFactory } from "../../services/commentService.js";
+import * as commentService from "../../services/commentService.js";
 import { useService } from "../../hooks/useService.js";
 import { AuthContext } from "../../contexts/AuthContext.js";
 
+import { AddComment } from "./AddComment/AddComment.js";
+
 export const GameDetails = () => {
-  const { userId } = useContext(AuthContext);
-  const [username, setUsername] = useState("");
-  const [comment, setComment] = useState("");
+  const { userId, isAuthenticated } = useContext(AuthContext);
   const [comments, setComments] = useState([]);
   const { gameId } = useParams();
   const [game, setGame] = useState({});
+
   const gameService = useService(gameServiceFactory);
-  const commentService = useService(commentFactory);
   const navigate = useNavigate();
 
   useEffect(() => {
-    gameService
-      .getOne(gameId)
-      .then((result) => {
-        setGame(result);
-        return commentService.getAll(gameId);
-      })
-      .then((result) => {
-        setComments(result);
+    Promise.all([
+      gameService.getOne(gameId),
+      commentService.getAll(gameId),
+    ]).then(([gameData, commentsData]) => {
+      setGame({
+        ...gameData,
+        comments: commentsData,
       });
+    });
   }, [gameId]);
 
-  const onCommentSubmit = async (e) => {
-    e.preventDefault();
-    const result = await commentService.create({
-      gameId,
-      username,
-      comment,
-    });
+  const onCommentSubmit = async (values) => {
+    const result = await commentService.create(gameId, values.comment);
 
-    setUsername("");
-    setComment("");
+    //setUsername("");
+    //setComment("");
   };
 
   const onDeleteClick = async () => {
@@ -63,15 +58,16 @@ export const GameDetails = () => {
         <div className="details-comments">
           <h2>Comments:</h2>
           <ul>
-            {comments.map((x) => (
-              <li key={comment._id} className="comment">
-                <p>
-                  {x.username}: {x.comment}
-                </p>
-              </li>
-            ))}
+            {game.comments &&
+              game.comments.map((x) => (
+                <li key={x._id} className="comment">
+                  <p>{x.comment}</p>
+                </li>
+              ))}
           </ul>
-          {comments.length === 0 && <p className="no-comment">No comments.</p>}
+          {game.comments && game.comments.length === 0 && (
+            <p className="no-comment">No comments.</p>
+          )}
         </div>
 
         {/* <!-- Edit/Delete buttons ( Only htmlfor creator of this game )  --> */}
@@ -87,27 +83,7 @@ export const GameDetails = () => {
         )}
       </div>
 
-      {/* <!-- Bonus --> */}
-      {/* <!-- Add Comment ( Only htmlfor logged-in users, which is not creators of the current game ) --> */}
-      <article className="create-comment">
-        <label>Add new comment:</label>
-        <form className="htmlform" onSubmit={onCommentSubmit}>
-          <input
-            type="text"
-            name="username"
-            placeholder="Your name..."
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-          <textarea
-            name="comment"
-            placeholder="Comment......"
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-          ></textarea>
-          <input className="btn submit" type="submit" value="Add Comment" />
-        </form>
-      </article>
+      {isAuthenticated && <AddComment onCommentSubmit={onCommentSubmit} />}
     </section>
   );
 };
