@@ -1,6 +1,6 @@
 import { requestFactory } from "./requester.js";
 
-const baseUrl = "http://localhost:3030/jsonstore/comments";
+const baseUrl = "http://localhost:3030/data/comments";
 
 export const commentFactory = (token) => {
   const request = requestFactory(token);
