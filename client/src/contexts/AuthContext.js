@@ -2,11 +2,12 @@ import { createContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { authServiceFactory } from "../services/authService.js";
+import { useLocalStorage } from "../hooks/useLocalStorage.js";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [auth, setAuth] = useState({});
+  const [auth, setAuth] = useLocalStorage("auth", {});
   const navigate = useNavigate();
   const authService = authServiceFactory(auth.accessToken);
   const onLoginSubmit = async (data) => {
