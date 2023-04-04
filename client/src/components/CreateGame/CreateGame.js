@@ -1,6 +1,8 @@
+import { useGameContext } from "../../contexts/GameContext.js";
 import { useForm } from "../../hooks/useForm.js";
 
-export const CreateGame = ({ onCreateGameSubmit }) => {
+export const CreateGame = () => {
+  const { onCreateGameSubmit } = useGameContext();
   const { values, changeHadler, onSubmit } = useForm(
     {
       title: "",

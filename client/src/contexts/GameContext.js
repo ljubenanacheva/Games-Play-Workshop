@@ -1,7 +1,7 @@
 import { useState, createContext, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { gameServiceFactory } from "./services/gameService.js";
+import { gameServiceFactory } from "../services/gameService.js";
 
 export const GameContext = createContext();
 

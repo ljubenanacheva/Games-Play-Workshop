@@ -1,7 +1,5 @@
-import { useState, useEffect } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
-import { gameServiceFactory } from "./services/gameService.js";
 import { AuthProvider } from "./contexts/AuthContext.js";
 
 import { CreateGame } from "./components/CreateGame/CreateGame.js";
@@ -16,61 +14,33 @@ import { Logout } from "./components/Logout/Logout.js";
 import { EditGame } from "./components/EditGame/EditGame.js";
 import { useService } from "./hooks/useService.js";
 import { RouteGuard } from "./components/common/RouteGuard.js";
+import { GameProvider } from "./contexts/GameContext.js";
 
 function App() {
-  const navigate = useNavigate();
-  const [games, setGames] = useState([]);
-
-  const gameService = gameServiceFactory(); //auth.AccessToken
-
-  useEffect(() => {
-    gameService.getAll().then((result) => {
-      setGames(result);
-    });
-  }, []);
-
-  const onCreateGameSubmit = async (data) => {
-    const newGame = await gameService.create(data);
-    setGames((state) => [...state, newGame]);
-    navigate("/catalog");
-  };
-
-  const onGameEditSubmit = async (values) => {
-    const editedGame = await gameService.edit(values._id, values);
-    setGames((state) =>
-      state.map((x) => (x._id === values._id ? editedGame : x))
-    );
-    navigate(`/catalog/${values._id}`);
-  };
-
   return (
     <AuthProvider>
-      <div id="box">
-        <Header />
-        <main id="main-content">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
+      <GameProvider>
+        <div id="box">
+          <Header />
+          <main id="main-content">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
 
-            <Route element={<RouteGuard />}>
-              <Route
-                path="/create-game"
-                element={<CreateGame onCreateGameSubmit={onCreateGameSubmit} />}
-              />
-              <Route
-                path="/catalog/:gameId/edit"
-                element={<EditGame onGameEditSubmit={onGameEditSubmit} />}
-              />
-              <Route path="/logout" element={<Logout />} />
-            </Route>
+              <Route element={<RouteGuard />}>
+                <Route path="/create-game" element={<CreateGame />} />
+                <Route path="/catalog/:gameId/edit" element={<EditGame />} />
+                <Route path="/logout" element={<Logout />} />
+              </Route>
 
-            <Route path="/catalog" element={<Catalog games={games} />} />
-            <Route path="/catalog/:gameId" element={<GameDetails />} />
-          </Routes>
-        </main>
-        <Footer />
-      </div>
+              <Route path="/catalog" element={<Catalog />} />
+              <Route path="/catalog/:gameId" element={<GameDetails />} />
+            </Routes>
+          </main>
+          <Footer />
+        </div>
+      </GameProvider>
     </AuthProvider>
   );
 }

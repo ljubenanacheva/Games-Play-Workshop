@@ -4,8 +4,10 @@ import { useEffect } from "react";
 import { useForm } from "../../hooks/useForm.js";
 import { useService } from "../../hooks/useService.js";
 import { gameServiceFactory } from "../../services/gameService.js";
+import { useGameContext } from "../../contexts/GameContext.js";
 
-export const EditGame = ({ onGameEditSubmit }) => {
+export const EditGame = () => {
+  const { onGameEditSubmit } = useGameContext();
   const { gameId } = useParams();
   const gameService = useService(gameServiceFactory);
   const { values, changeHadler, onSubmit, changeValues } = useForm(
