@@ -15,6 +15,7 @@ import { GameDetails } from "./components/GameDetails/GameDetails.js";
 import { Logout } from "./components/Logout/Logout.js";
 import { EditGame } from "./components/EditGame/EditGame.js";
 import { useService } from "./hooks/useService.js";
+import { RouteGuard } from "./components/common/RouteGuard.js";
 
 function App() {
   const navigate = useNavigate();
@@ -51,17 +52,21 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/logout" element={<Logout />} />
-            <Route
-              path="/create-game"
-              element={<CreateGame onCreateGameSubmit={onCreateGameSubmit} />}
-            />
+
+            <Route element={<RouteGuard />}>
+              <Route
+                path="/create-game"
+                element={<CreateGame onCreateGameSubmit={onCreateGameSubmit} />}
+              />
+              <Route
+                path="/catalog/:gameId/edit"
+                element={<EditGame onGameEditSubmit={onGameEditSubmit} />}
+              />
+              <Route path="/logout" element={<Logout />} />
+            </Route>
+
             <Route path="/catalog" element={<Catalog games={games} />} />
             <Route path="/catalog/:gameId" element={<GameDetails />} />
-            <Route
-              path="/catalog/:gameId/edit"
-              element={<EditGame onGameEditSubmit={onGameEditSubmit} />}
-            />
           </Routes>
         </main>
         <Footer />
