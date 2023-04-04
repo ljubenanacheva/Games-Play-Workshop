@@ -14,6 +14,7 @@ import { Catalog } from "./components/Catalog/Catalog.js";
 import { GameDetails } from "./components/GameDetails/GameDetails.js";
 import { Logout } from "./components/Logout/Logout.js";
 import { EditGame } from "./components/EditGame/EditGame.js";
+import { useService } from "./hooks/useService.js";
 
 function App() {
   const navigate = useNavigate();

@@ -11,7 +11,11 @@ export const create = async (gameId, comment) => {
 
 export const getAll = async (gameId) => {
   const query = encodeURIComponent(`gameId="${gameId}"`);
-  const result = await request.get(`${baseUrl}?where=${query}`);
+  const relationQuery = encodeURIComponent(`author=_ownerId:users`);
+
+  const result = await request.get(
+    `${baseUrl}?where=${query}&load=${relationQuery}`
+  );
   const comments = Object.values(result);
   return comments;
 };

@@ -9,7 +9,7 @@ import { AuthContext } from "../../contexts/AuthContext.js";
 import { AddComment } from "./AddComment/AddComment.js";
 
 export const GameDetails = () => {
-  const { userId, isAuthenticated } = useContext(AuthContext);
+  const { userId, isAuthenticated, userEmail } = useContext(AuthContext);
   const [comments, setComments] = useState([]);
   const { gameId } = useParams();
   const [game, setGame] = useState({});
@@ -31,9 +31,18 @@ export const GameDetails = () => {
 
   const onCommentSubmit = async (values) => {
     const result = await commentService.create(gameId, values.comment);
-
-    //setUsername("");
-    //setComment("");
+    setGame((state) => ({
+      ...state,
+      comments: [
+        ...state.comments,
+        {
+          ...result,
+          author: {
+            email: userEmail,
+          },
+        },
+      ],
+    }));
   };
 
   const onDeleteClick = async () => {
@@ -61,7 +70,9 @@ export const GameDetails = () => {
             {game.comments &&
               game.comments.map((x) => (
                 <li key={x._id} className="comment">
-                  <p>{x.comment}</p>
+                  <p>
+                    {x.author.email}: {x.comment}
+                  </p>
                 </li>
               ))}
           </ul>
