@@ -31,10 +31,15 @@ export const GameProvider = ({ children }) => {
     navigate(`/catalog/${values._id}`);
   };
 
+  const getGame = (gameId) => {
+    return games.find((game) => game._id === gameId);
+  };
+
   const contextValues = {
     games,
     onCreateGameSubmit,
     onGameEditSubmit,
+    getGame,
   };
 
   return (

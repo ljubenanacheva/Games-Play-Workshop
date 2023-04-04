@@ -16,7 +16,6 @@ export const gameServiceFactory = (token) => {
   };
   const getOne = async (gameId) => {
     const result = await request.get(`${baseUrl}/${gameId}`);
-    console.log(result);
     return result;
   };
   const edit = (gameId, data) => request.put(`${baseUrl}/${gameId}`, data);

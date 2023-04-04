@@ -12,9 +12,9 @@ import { Catalog } from "./components/Catalog/Catalog.js";
 import { GameDetails } from "./components/GameDetails/GameDetails.js";
 import { Logout } from "./components/Logout/Logout.js";
 import { EditGame } from "./components/EditGame/EditGame.js";
-import { useService } from "./hooks/useService.js";
 import { RouteGuard } from "./components/common/RouteGuard.js";
 import { GameProvider } from "./contexts/GameContext.js";
+import { GameOwner } from "./components/common/GameOwner.js";
 
 function App() {
   return (
@@ -30,7 +30,14 @@ function App() {
 
               <Route element={<RouteGuard />}>
                 <Route path="/create-game" element={<CreateGame />} />
-                <Route path="/catalog/:gameId/edit" element={<EditGame />} />
+                <Route
+                  path="/catalog/:gameId/edit"
+                  element={
+                    <GameOwner>
+                      <EditGame />
+                    </GameOwner>
+                  }
+                />
                 <Route path="/logout" element={<Logout />} />
               </Route>
 
