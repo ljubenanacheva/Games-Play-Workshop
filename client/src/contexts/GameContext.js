@@ -35,11 +35,16 @@ export const GameProvider = ({ children }) => {
     return games.find((game) => game._id === gameId);
   };
 
+  const deleteGame = (gameId) => {
+    setGames((state) => state.filter((game) => game._id !== gameId));
+  };
+
   const contextValues = {
     games,
     onCreateGameSubmit,
     onGameEditSubmit,
     getGame,
+    deleteGame,
   };
 
   return (

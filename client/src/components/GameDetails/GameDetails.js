@@ -7,14 +7,16 @@ import { useService } from "../../hooks/useService.js";
 import { AuthContext } from "../../contexts/AuthContext.js";
 
 import { AddComment } from "./AddComment/AddComment.js";
+import { useGameContext } from "../../contexts/GameContext.js";
 
 export const GameDetails = () => {
   const { userId, isAuthenticated, userEmail } = useContext(AuthContext);
-  const [comments, setComments] = useState([]);
+
   const { gameId } = useParams();
   const [game, setGame] = useState({});
 
   const gameService = useService(gameServiceFactory);
+  const { deleteGame } = useGameContext();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -46,9 +48,13 @@ export const GameDetails = () => {
   };
 
   const onDeleteClick = async () => {
-    await gameService.delete(game._id);
-    //TODO delete from state
-    navigate("/catalog");
+    //eslint-disable-next-line no-restricted-globals
+    const result = confirm(`Are you sure you want to delete ${game.title}?`);
+    if (result) {
+      await gameService.delete(game._id);
+      deleteGame(game._id);
+      navigate("/catalog");
+    }
   };
 
   return (
